@@ -1,12 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
 	fmt.Println("Hello, World!")
 }
 
 func cleanInput(text string) []string {
-	var returnSlice []string
-	return returnSlice
+	var result []string
+	if text == "" {
+		return result
+	}
+	text = strings.ToLower(text)
+	result = strings.Fields(text)
+	return result
 }
