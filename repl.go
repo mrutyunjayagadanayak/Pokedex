@@ -49,27 +49,6 @@ func cleanInput(text string) []string {
 	return result
 }
 
-func commandExit() error {
-	fmt.Println("Closing the Pokedex... Goodbye!")
-	os.Exit(0)
-	return nil
-}
-
-func commandHelp() error {
-	text := `Welcome to the Pokedex!
-Usage:
-	`
-	fmt.Println(text)
-	for key, val := range registry {
-		fmt.Println(key, ":", val.description)
-	}
-	return nil
-}
-
-func commandMap() error {
-	return nil
-}
-
 func init() {
 	registry["exit"] = cliCommand{
 		name:        "exit",
