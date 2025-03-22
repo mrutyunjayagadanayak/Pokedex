@@ -7,17 +7,32 @@ import (
 	"strings"
 )
 
+type Config struct {
+	Next     string
+	Previous string
+}
+
+type LocationAreaResponse struct {
+	Count    int    `json:"count"`
+	Next     string `json:"next"`
+	Previous string `json:"previous"`
+	Results  []struct {
+		Name string `json:"name"`
+		URL  string `json:"url"`
+	} `json:"results"`
+}
+
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*Config) error
 }
 
 var registry = make(map[string]cliCommand)
 
 func startRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
-
+	config := &Config{}
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
@@ -32,7 +47,7 @@ func startRepl() {
 		input = inputSlice[0]
 		commandValue, exists := registry[input]
 		if exists {
-			commandValue.callback()
+			commandValue.callback(config)
 		} else {
 			fmt.Println("Unknown command")
 		}
@@ -66,5 +81,11 @@ func init() {
 		name:        "map",
 		description: "Display a list of areas",
 		callback:    commandMap,
+	}
+
+	registry["mapb"] = cliCommand{
+		name:        "mapb",
+		description: "Display the previuous areas",
+		callback:    commandMapb,
 	}
 }

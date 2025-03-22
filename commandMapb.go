@@ -7,11 +7,13 @@ import (
 	"net/http"
 )
 
-func commandMap(config *Config) error {
-	url := config.Next
+func commandMapb(config *Config) error {
+	url := config.Previous
 	if url == "" {
-		url = "https://pokeapi.co/api/v2/location-area"
+		fmt.Println("you're on the first page")
+		return nil
 	}
+
 	res, err := http.Get(url)
 	if err != nil {
 		return err
@@ -20,7 +22,6 @@ func commandMap(config *Config) error {
 	if err != nil {
 		return err
 	}
-
 	var locationresp LocationAreaResponse
 	err = json.Unmarshal(body, &locationresp)
 	if err != nil {
