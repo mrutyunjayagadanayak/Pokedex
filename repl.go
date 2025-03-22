@@ -66,6 +66,10 @@ Usage:
 	return nil
 }
 
+func commandMap() error {
+	return nil
+}
+
 func init() {
 	registry["exit"] = cliCommand{
 		name:        "exit",
@@ -77,5 +81,11 @@ func init() {
 		name:        "help",
 		description: "Displays a help message",
 		callback:    commandHelp,
+	}
+
+	registry["map"] = cliCommand{
+		name:        "map",
+		description: "Display a list of areas",
+		callback:    commandMap,
 	}
 }
