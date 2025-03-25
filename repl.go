@@ -15,16 +15,6 @@ type Config struct {
 	Cache    *pokecache.Cache
 }
 
-type LocationAreaResponse struct {
-	Count    int    `json:"count"`
-	Next     string `json:"next"`
-	Previous string `json:"previous"`
-	Results  []struct {
-		Name string `json:"name"`
-		URL  string `json:"url"`
-	} `json:"results"`
-}
-
 type cliCommand struct {
 	name        string
 	description string
