@@ -4,12 +4,15 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"pokedexcli/internal/pokecache"
 	"strings"
+	"time"
 )
 
 type Config struct {
 	Next     string
 	Previous string
+	Cache    *pokecache.Cache
 }
 
 type LocationAreaResponse struct {
@@ -32,7 +35,9 @@ var registry = make(map[string]cliCommand)
 
 func startRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
-	config := &Config{}
+	config := &Config{
+		Cache: pokecache.NewCache(10 * time.Second),
+	}
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()

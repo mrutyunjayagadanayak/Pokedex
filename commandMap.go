@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"pokedexcli/internal/pokecache"
-	"time"
 )
 
 func commandMap(config *Config) error {
@@ -15,19 +13,22 @@ func commandMap(config *Config) error {
 		url = "https://pokeapi.co/api/v2/location-area"
 	}
 	var locationresp LocationAreaResponse
-	cache := pokecache.NewCache(10 * time.Second)
+	cache := config.Cache
 	data, exists := cache.Get(url)
 
-	res, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		return err
+	if !exists {
+		res, err := http.Get(url)
+		if err != nil {
+			return err
+		}
+		data, err = io.ReadAll(res.Body)
+		if err != nil {
+			return err
+		}
+		cache.Add(url, data)
 	}
 
-	err = json.Unmarshal(body, &locationresp)
+	err := json.Unmarshal(data, &locationresp)
 	if err != nil {
 		return err
 	}
