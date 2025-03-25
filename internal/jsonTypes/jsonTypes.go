@@ -1,4 +1,4 @@
-package jsontypes
+package jsonTypes
 
 type LocationAreaResponse struct {
 	Count    int    `json:"count"`

@@ -6,6 +6,7 @@ import (
 )
 
 func TestCleanInput(t *testing.T) {
+	//fmt.Println("Ran TestCleanInput")
 	cases := []struct {
 		input    string
 		expected []string
