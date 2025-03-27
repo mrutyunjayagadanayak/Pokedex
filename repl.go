@@ -10,9 +10,10 @@ import (
 )
 
 type Config struct {
-	Next     string
-	Previous string
-	Cache    *pokecache.Cache
+	Next      string
+	Previous  string
+	Cache     *pokecache.Cache
+	InputArgs []string
 }
 
 type cliCommand struct {
@@ -41,6 +42,7 @@ func startRepl() {
 		}
 		input = inputSlice[0]
 		commandValue, exists := registry[input]
+		config.InputArgs = inputSlice
 		if exists {
 			commandValue.callback(config)
 		} else {
@@ -82,5 +84,11 @@ func init() {
 		name:        "mapb",
 		description: "Display the previuous areas",
 		callback:    commandMapb,
+	}
+
+	registry["explore"] = cliCommand{
+		name:        "explore",
+		description: "Explore a particular region",
+		callback:    commandExplore,
 	}
 }
