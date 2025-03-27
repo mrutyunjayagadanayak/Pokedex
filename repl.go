@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"pokedexcli/internal/jsonTypes"
 	"pokedexcli/internal/pokecache"
 	"strings"
 	"time"
@@ -23,6 +24,8 @@ type cliCommand struct {
 }
 
 var registry = make(map[string]cliCommand)
+
+var pokedex = make(map[string]jsonTypes.PokemonResponse)
 
 func startRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
@@ -90,5 +93,17 @@ func init() {
 		name:        "explore",
 		description: "Explore a particular region",
 		callback:    commandExplore,
+	}
+
+	registry["catch"] = cliCommand{
+		name:        "catch",
+		description: "Catch a given pokemon",
+		callback:    commandCatch,
+	}
+
+	registry["inspect"] = cliCommand{
+		name:        "inspect",
+		description: "Inspect an already caught Pokemon",
+		callback:    commandInspect,
 	}
 }

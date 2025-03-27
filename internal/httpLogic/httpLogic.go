@@ -1,4 +1,4 @@
-package maplogic
+package httpLogic
 
 import (
 	"encoding/json"
@@ -8,11 +8,10 @@ import (
 	"pokedexcli/internal/pokecache"
 )
 
-func MapLogic[T any](cache *pokecache.Cache, url string, target *T) error {
+func HttpLogic[T any](cache *pokecache.Cache, url string, target *T) error {
 
 	data, exists := cache.Get(url)
 	if !exists {
-		fmt.Println("Date not in cache")
 		res, err := http.Get(url)
 		if err != nil {
 			return err
@@ -20,7 +19,7 @@ func MapLogic[T any](cache *pokecache.Cache, url string, target *T) error {
 		defer res.Body.Close()
 
 		if res.StatusCode != http.StatusOK {
-			return err
+			return fmt.Errorf("NonOk status code received")
 		}
 
 		data, err = io.ReadAll(res.Body)
@@ -29,8 +28,6 @@ func MapLogic[T any](cache *pokecache.Cache, url string, target *T) error {
 			return err
 		}
 		cache.Add(url, data)
-	} else {
-		fmt.Println("Data got from cache")
 	}
 
 	err := json.Unmarshal(data, target)

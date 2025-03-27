@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"pokedexcli/internal/httpLogic"
 	"pokedexcli/internal/jsonTypes"
-	maplogic "pokedexcli/internal/mapOperations"
 )
 
 func commandMapb(config *Config) error {
@@ -15,8 +15,9 @@ func commandMapb(config *Config) error {
 		return nil
 	}
 
-	err := maplogic.MapLogic(config.Cache, url, &locationresp)
+	err := httpLogic.HttpLogic(config.Cache, url, &locationresp)
 	if err != nil {
+		println("Incorrect data received")
 		return err
 	}
 

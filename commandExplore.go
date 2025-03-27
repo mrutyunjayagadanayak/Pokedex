@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
+	"pokedexcli/internal/httpLogic"
 	"pokedexcli/internal/jsonTypes"
-	maplogic "pokedexcli/internal/mapOperations"
 )
 
 func commandExplore(config *Config) error {
-	var pokemonResp jsonTypes.PokemonListAreaResponse
+	var pokemonAreaResp jsonTypes.PokemonListAreaResponse
 
 	if len(config.InputArgs) < 2 {
 		fmt.Println("Please provide a location area name")
@@ -17,14 +17,15 @@ func commandExplore(config *Config) error {
 
 	url := "https://pokeapi.co/api/v2/location-area/" + areaName
 
-	err := maplogic.MapLogic(config.Cache, url, &pokemonResp)
+	err := httpLogic.HttpLogic(config.Cache, url, &pokemonAreaResp)
 	if err != nil {
+		println("Incorrect data received")
 		return err
 	}
 	fmt.Printf("Exploring %s...\n", areaName)
 	fmt.Println("Found Pokemon:")
 
-	for _, encounter := range pokemonResp.PokemonEncounters {
+	for _, encounter := range pokemonAreaResp.PokemonEncounters {
 		fmt.Printf(" - %s\n", encounter.Pokemon.Name)
 	}
 	return nil
