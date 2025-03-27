@@ -106,4 +106,10 @@ func init() {
 		description: "Inspect an already caught Pokemon",
 		callback:    commandInspect,
 	}
+
+	registry["pokedex"] = cliCommand{
+		name:        "pokedex",
+		description: "Show all caught pokemon",
+		callback:    commandPokedex,
+	}
 }
